@@ -2,6 +2,8 @@
 {
     partial class Game
     {
+        private int boardSize;
+
         /// <summary>
         /// Required designer variable.
         /// </summary>
@@ -35,7 +37,7 @@
             // Cell
             // 
             this.Cell.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.Cell.Location = new System.Drawing.Point(46, 49);
+            this.Cell.Location = new System.Drawing.Point(34, 49);
             this.Cell.Name = "Cell";
             this.Cell.Size = new System.Drawing.Size(85, 83);
             this.Cell.TabIndex = 0;
