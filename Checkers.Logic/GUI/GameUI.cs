@@ -35,7 +35,8 @@ namespace Checkers.GUI
         private void Square_Click(object sender, EventArgs e)
         {
             Square senderSquare = sender as Square;
-            if (!m_IsTargetClick) {
+            if (!m_IsTargetClick)
+            {
                 
                 if (m_Game.isValidSource(senderSquare.Cell))
                 {
@@ -53,15 +54,16 @@ namespace Checkers.GUI
                     m_IsTargetClick = false;
                     m_OptionalSource = null;
                 }
-                else if (m_Game.isValidTarget(senderSquare.Cell, m_OptionalSource.Cell))
+                else
                 {
 
-
+                    m_Game.MakeMove(m_OptionalSource.Cell, senderSquare.Cell);
                     m_IsTargetClick = false;
+                    m_OptionalSource.UnMark();
                     m_OptionalSource = null;
                 }
             }
-
+            UpdateBoard();
         }
 
     }

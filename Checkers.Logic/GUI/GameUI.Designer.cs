@@ -26,6 +26,14 @@ namespace Checkers.GUI
             base.Dispose(disposing);
         }
 
+        private void UpdateBoard()
+        {
+            foreach (Square square in m_Squares)
+            {
+                square.Text = square.Cell.ToString();
+            }
+        }
+
         #region Windows Form Designer generated code
 
         /// <summary>

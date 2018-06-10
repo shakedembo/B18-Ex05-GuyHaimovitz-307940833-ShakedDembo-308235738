@@ -13,20 +13,23 @@ namespace Checkers.Logic
         private Cell m_Destination;
 
         private bool m_Result;
+        private bool m_isJump;
 
         public Move(Game i_Game, Cell i_Source, Cell iDestination)
         {
             m_Source = i_Source;
             m_Destination = iDestination;
             m_Game = i_Game;
-            m_Result = isValidMove();
+            m_Result = isValidMove(); //sets isJump as well
         }
 
         private bool isValidMove()
         {
+            bool Jump = m_Source.Piece.isKing() ? isKingValidJump() : isManValidJump();
+            m_isJump = Jump;
             return (m_Source.Piece.isKing()
-                ? isKingValidJump() || isKingValidMove()
-                : isManValidJump() || isManValidMove());
+                ? Jump || isKingValidMove()
+                : Jump || isManValidMove());
         }
 
         private bool isKingValidJump()
@@ -119,7 +122,7 @@ namespace Checkers.Logic
         private bool isValidManBlackJump()
         {
             int inBetweenCol = m_Destination.Col > m_Source.Col ? m_Source.Col + 1 : m_Source.Col - 1;
-            return !m_Game.Board.IsOccupied(m_Destination) && m_Game.Board.GetCell(m_Source.Row + 1, inBetweenCol).Piece is PieceO;
+            return !m_Game.Board.IsOccupied(m_Destination) && (m_Game.Board.GetCell(m_Source.Row + 1, inBetweenCol).Piece is PieceO);
         }
 
         private bool hasToEat()
@@ -250,6 +253,10 @@ namespace Checkers.Logic
         public bool Result
         {
             get { return m_Result; }
+        }
+        public bool IsJump
+        {
+            get { return m_isJump; }
         }
     }
 }

@@ -35,7 +35,7 @@ namespace Checkers.Logic
                 {
                     if ((i + j) % 2 == 1)
                     {
-                        IPiece piece = new PieceO();
+                        IPiece piece = new PieceO(new Tuple<int, int>(i, j));
                         m_Board.GetCell(i, j).Piece = piece;
                         m_Player2.AddPiece(piece);
                     }
@@ -48,7 +48,7 @@ namespace Checkers.Logic
                 {
                     if ((i + j) % 2 == 1)
                     {
-                        IPiece piece = new PieceX();
+                        IPiece piece = new PieceX(new Tuple<int, int>(i, j));
                         m_Board.GetCell(i, j).Piece = piece;
                         m_Player1.AddPiece(piece);
                     }
@@ -60,6 +60,36 @@ namespace Checkers.Logic
         {
             GameUI gameUi = new GameUI(this);
             gameUi.ShowDialog();
+        }
+
+        public void MakeMove(Cell i_Source, Cell i_Destination)
+        {
+            Move move = new Move(this, i_Source, i_Destination);
+            if (move.Result)
+            {
+                i_Source.Piece.Position = new Tuple<int, int>(i_Destination.Row, i_Destination.Col);
+                i_Destination.Piece = i_Source.Piece;
+                i_Source.Piece = null;
+
+                if (move.IsJump)
+                {
+                    int inBetweenCol = i_Destination.Col > i_Source.Col ? i_Source.Col + 1 : i_Source.Col - 1;
+                    int inBetweenRow = i_Destination.Row > i_Source.Row ? i_Source.Row + 1 : i_Source.Row - 1;
+                    IPiece pieceToRemove = m_Board.GetCell(inBetweenRow, inBetweenCol).Piece;
+
+                    if (m_Player1.RemovePiece(pieceToRemove))
+                    {
+                        m_Board.GetCell(inBetweenRow, inBetweenCol).Piece = null;
+                    }
+                    else
+                    {
+                        m_Player2.RemovePiece(pieceToRemove);
+                        m_Board.GetCell(inBetweenRow, inBetweenCol).Piece = null;
+                    }
+                }
+
+                m_CurrentPlayer = CurrentPlayer == m_Player1 ? m_Player2 : m_Player1;
+            }
         }
 
         public bool isValidSource(Cell i_SourceCell)

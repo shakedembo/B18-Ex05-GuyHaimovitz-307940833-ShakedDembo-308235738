@@ -1,4 +1,6 @@
-﻿namespace Checkers
+﻿using System;
+
+namespace Checkers
 {
     public interface IPiece
     {
@@ -7,6 +9,8 @@
 
         int Col { get; }
         int Row { get; }
+
+        Tuple<int, int> Position { set; }
 
     }
 }

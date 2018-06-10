@@ -39,7 +39,7 @@ namespace Checkers
 
         private bool isValidCoordinate(int row, int col)
         {
-            return (row >= 0 && row <= GetSize()) && (col >= 0 && col <= GetSize());
+            return (row >= 0 && row < GetSize()) && (col >= 0 && col < GetSize());
         }
 
         /**

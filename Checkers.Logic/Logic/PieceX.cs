@@ -7,6 +7,12 @@ namespace Checkers
         private bool m_IsKing;
         private Tuple<int, int> m_CurrentPosition;
 
+        public PieceX(Tuple<int, int> i_Position)
+        {
+            this.m_CurrentPosition = i_Position;
+            this.m_IsKing = false;
+        }
+
         public void kingMe()
         {
             m_IsKing = true;
@@ -15,6 +21,11 @@ namespace Checkers
         public bool isKing()
         {
             return m_IsKing;
+        }
+
+        public Tuple<int, int> Position
+        {
+            set { this.m_CurrentPosition = value; }
         }
 
         public int Col
@@ -30,5 +41,6 @@ namespace Checkers
         {
             return m_IsKing ? "K" : "X";
         }
+
     }
 }

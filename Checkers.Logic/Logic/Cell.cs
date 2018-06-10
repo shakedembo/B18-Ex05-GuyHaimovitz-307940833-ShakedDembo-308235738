@@ -30,5 +30,15 @@ namespace Checkers
         {
             get { return m_Position.Item1; }
         }
+
+        public Tuple<int, int> Position
+        {
+            set { this.Position = value; }
+        }
+
+        public override string ToString()
+        {
+            return this.Piece == null ? " " : this.Piece.ToString();
+        }
     }
 }
