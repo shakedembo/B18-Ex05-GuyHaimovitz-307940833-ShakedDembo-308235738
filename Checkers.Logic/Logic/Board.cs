@@ -2,7 +2,7 @@
 
 namespace Checkers
 {
-    class Board
+    public class Board
     {
         private Cell[,] m_Board;
 
@@ -15,52 +15,9 @@ namespace Checkers
             {
                 for (int j = 0; j < i_BoardSize; j++)
                 {
-                    m_Board[i, j] = new Cell();
+                    m_Board[i, j] = new Cell(new Tuple<int, int>(i, j));
                 }
             }
-        }
-
-        public void Print()
-        {
-            int boardSize = m_Board.GetLength(0);
-
-            for (char c = 'A'; c < 'A' + boardSize; c++)
-            {
-                Console.Write("   " + c);
-            }
-  
-            printSeperator();
-
-            for(int rowNumber = 0; rowNumber < boardSize; rowNumber++)
-            {
-                char rowChar = (char) ('a' + rowNumber);
-                Console.Write(rowChar + "|");
-                
-                for (int colNumber = 0; colNumber < boardSize; colNumber++)
-                {
-                    Console.Write(" ");
-                    m_Board[rowNumber, colNumber].printCellContent();
-                    Console.Write(" |");
-                }
-                printSeperator();
-            }
-        }
-
-        private void printSeperator()
-        {
-            int boardSize = m_Board.GetLength(0);
-            Console.WriteLine();
-            Console.Write(" ");
-            for (int i = 0; i < boardSize; i++)
-            {
-                Console.Write("====");
-            }
-            Console.WriteLine("=");
-        }
-
-        public void SetCell(Cell.eCellState iState, Game.Coordinate i_Location)
-        {
-            m_Board[i_Location.Row, i_Location.Col].Content = iState;
         }
 
         public int GetSize()
@@ -68,14 +25,14 @@ namespace Checkers
             return m_Board.GetLength(0);
         }
 
-        public Cell.eCellState GetCellContent(Game.Coordinate i_Coordinate)
+        public Cell GetCell(int i, int j)
         {
-            return m_Board[i_Coordinate.Row, i_Coordinate.Col].Content;
+            return m_Board[i, j];
         }
 
-        public bool IsOccupied(Cell cell)
+        public bool IsOccupied(int i, int j)
         {
-            return cell.Content != Cell.eCellState.Empty;
+            return GetCell(i, j).Piece != null;
         }
     }
 }

@@ -1,14 +1,18 @@
 ﻿using System;
+using System.Threading;
+using Checkers.Logic.GUI;
 
 namespace Checkers
 {
-    class Game
+    public class Game
     {
         private Board m_Board;
-        private Player m_Player1;
+        private IPlayer m_Player1;
         private Player m_Player2;
 
-        
+        private static int moveCounter = 0;
+
+
 
         public Game(Player i_Player1, Player i_Player2, int i_BoardSize, int numberOfPlayers)
         {
@@ -19,27 +23,27 @@ namespace Checkers
 
         public Tuple<int, Player> StartGame()
         {
-            int moveCounter = 0;
             printGame();
 
             while (true)
             {
                 Move move;
-                
+
                 if (moveCounter % 2 == 0)
                 {
                     move = new Move(m_Board, m_Player1);
-                    
+
                 }
                 else
                 {
                     if (m_Player2.IsHuman)
                     {
+                        //get source (click)
                         move = new Move(m_Board, m_Player2);
                     }
                     else
                     {
-                        PcPlayer pc = (PcPlayer) m_Player2;
+                        PcPlayer_Old pc = (PcPlayer_Old) m_Player2;
                         move = pc.GetMove(m_Board);
                     }
                 }
@@ -53,10 +57,11 @@ namespace Checkers
                     }
                     else
                     {
-                       continue;
+                        continue;
                     }
-                    
+
                 }
+
                 makeMove(move);
                 printAfterMove(move);
                 moveCounter++;
@@ -69,11 +74,12 @@ namespace Checkers
         {
             if (move.ToQuit)
             {
-                
+
             }
             else if (move.IsJump)
             {
-                Cell.eCellState sourceCellContent = m_Board.GetCellContent(move.Source);// get the source cell content/type
+                Cell.eCellState
+                    sourceCellContent = m_Board.GetCellContent(move.Source); // get the source cell content/type
                 m_Board.SetCell(Cell.eCellState.Empty, move.Source); //empty source cell
                 m_Board.SetCell(sourceCellContent, move.Destination); //change dest to the type of source cell
                 move.Player.m_PlayerCheckers.Remove(move.Source); //remove the source location from the list
@@ -105,8 +111,9 @@ namespace Checkers
             }
             else
             {
-                Cell.eCellState sourceCellContent= m_Board.GetCellContent(move.Source);// get the source cell content/type
-                m_Board.SetCell(Cell.eCellState.Empty,move.Source); //empty source cell
+                Cell.eCellState
+                    sourceCellContent = m_Board.GetCellContent(move.Source); // get the source cell content/type
+                m_Board.SetCell(Cell.eCellState.Empty, move.Source); //empty source cell
                 m_Board.SetCell(sourceCellContent, move.Destination); //change dest to the type of source cell
                 move.Player.m_PlayerCheckers.Remove(move.Source); //remove the source location from the list
                 move.Player.m_PlayerCheckers.Add(move.Destination); //add the dest location to the list
@@ -114,11 +121,11 @@ namespace Checkers
 
             }
 
-           if(ifKingme(move.Destination, move.Player.Color))
+            if (ifKingme(move.Destination, move.Player.Color))
             {
                 if (m_Board.GetCellContent(move.Destination) == Cell.eCellState.X)
                 {
-                    m_Board.SetCell(Cell.eCellState.K,move.Destination);
+                    m_Board.SetCell(Cell.eCellState.K, move.Destination);
                 }
                 else if (m_Board.GetCellContent(move.Destination) == Cell.eCellState.O)
                 {
@@ -132,7 +139,8 @@ namespace Checkers
 
         private bool ifKingme(Coordinate moveDestination, Player.PlayerColor color)
         {
-            return (color == Player.PlayerColor.White && moveDestination.Row == m_Board.GetSize() - 1) ||(color == Player.PlayerColor.Black && moveDestination.Row == 0); 
+            return (color == Player.PlayerColor.White && moveDestination.Row == m_Board.GetSize() - 1) ||
+                   (color == Player.PlayerColor.Black && moveDestination.Row == 0);
         }
 
 
@@ -142,6 +150,7 @@ namespace Checkers
             string toPrint = getSymbole(i_LastMove.Player.Color);
             Console.WriteLine(i_LastMove.Player.Name + "'s move was " + toPrint + ": " + i_LastMove.Input);
         }
+
         public void printGame()
         {
             Console.Clear();
@@ -178,11 +187,12 @@ namespace Checkers
                     }
                 }
             }
+
             for (int i = (i_BoardSize / 2) + 1; i < i_BoardSize; i++)
             {
                 for (int j = 0; j < i_BoardSize; j++)
                 {
-                    if ((i + j)% 2 == 1)
+                    if ((i + j) % 2 == 1)
                     {
                         m_Board.SetCell(Cell.eCellState.X, new Coordinate(i, j));
                         m_Player1.m_PlayerCheckers.Add(new Coordinate(i, j));
@@ -201,9 +211,9 @@ namespace Checkers
             {
                 winner = m_Player2;
             }
-             
+
             //Chicken Dinner
-            return new Tuple<int, Player>(FinalScore,winner);
+            return new Tuple<int, Player>(FinalScore, winner);
         }
 
         private int calcScore(Player i_Player)
@@ -211,7 +221,8 @@ namespace Checkers
             int sum = 0;
             foreach (Coordinate checker in i_Player.m_PlayerCheckers)
             {
-                if (m_Board.GetCellContent(checker) == Cell.eCellState.X || m_Board.GetCellContent(checker) == Cell.eCellState.O)
+                if (m_Board.GetCellContent(checker) == Cell.eCellState.X ||
+                    m_Board.GetCellContent(checker) == Cell.eCellState.O)
                 {
                     sum++;
                 }
@@ -222,6 +233,11 @@ namespace Checkers
             }
 
             return sum;
+        }
+
+        public int GetBoardSize()
+        {
+            return this.m_Board.GetSize();
         }
 
         public struct Coordinate
@@ -248,11 +264,60 @@ namespace Checkers
                 get { return this.m_RowNumber; }
                 set { this.m_RowNumber = value; }
             }
+
             public int Col
             {
                 get { return this.m_ColNumber; }
                 set { this.m_ColNumber = value; }
             }
+
+
+        }
+
+        public Cell GetCell(int i, int j)
+        {
+            return m_Board.GetCell(i, j);
+        }
+
+        public void InitiateMove(Coordinate i_SourceCoordinate)
+        {
+            Move move;
+
+            if (moveCounter % 2 == 0)
+            {
+                move = new Move(m_Board, m_Player1, i_SourceCoordinate);
+
+            }
+            else
+            {
+                if (m_Player2.IsHuman)
+                {
+                    //get source (click)
+                    move = new Move(m_Board, m_Player2, i_SourceCoordinate);
+                }
+                else
+                {
+                    PcPlayer_Old pc = (PcPlayer_Old) m_Player2;
+                    move = pc.GetMove(m_Board);
+                }
+            }
+        }
+
+        public bool isValidSource(Coordinate i_SourceCoordinate)
+        {
+            Move move;
+
+            if (moveCounter % 2 == 0)
+            {
+                move = new Move(m_Board, m_Player1, i_SourceCoordinate);
+
+            }
+            else
+            {
+                move = new Move(m_Board, m_Player2, i_SourceCoordinate);
+            }
+
+            
         }
     }
 }

@@ -20,13 +20,15 @@ namespace Checkers
             }
             else
             {
-                m_Player2 = new PcPlayer(i_Two, Player.PlayerColor.White, false);
+                m_Player2 = new PcPlayer_Old(i_Two, Player.PlayerColor.White, false);
             }
 
             bool wantToContinue = true;
             while (wantToContinue)
             {
                 Game game = new Game(m_Player1, m_Player2, i_BoardSize, numberOfPlayers);
+                GUI.GameUI testGame = new GUI.GameUI(game);
+                testGame.ShowDialog();
                 Tuple<int, Player> LastGameResult = game.StartGame();
 
                 if (LastGameResult.Item2 == m_Player1)

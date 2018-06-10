@@ -37,9 +37,9 @@ namespace Checkers.GUI
             get { return Player2CheckBox.Checked ? Player2TextBox.Text : "PC"; }
         }
 
-        public int NumberOfPlayers
+        public bool IsTwoPlayers
         {
-            get { return Player2CheckBox.Checked ? 2 : 1; }
+            get { return Player2CheckBox.Checked; }
         }
 
         public int BoardSize

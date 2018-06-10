@@ -6,14 +6,11 @@ using System.Threading.Tasks;
 
 namespace Checkers.Logic
 {
-    class Move
+    public enum PlayerColor
     {
-
-
-
-
-
-
-
+        White,
+        Black
     }
+
+
 }
