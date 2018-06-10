@@ -7,7 +7,7 @@ using Checkers.GUI;
 
 namespace Checkers.Logic
 {
-    public class Game1
+    public class Game
     {
         private Board m_Board;
         private IPlayer m_Player1;
@@ -17,7 +17,7 @@ namespace Checkers.Logic
         
 
 
-        public Game1(IPlayer i_Player1, IPlayer i_Player2, int i_BoardSize)
+        public Game(IPlayer i_Player1, IPlayer i_Player2, int i_BoardSize)
         {
             m_Player1 = i_Player1;
             m_Player2 = i_Player2;
@@ -67,26 +67,21 @@ namespace Checkers.Logic
             return m_CurrentPlayer.DoesContain(i_SourceCell.Piece);
         }
 
-        public bool isValidTarget(Cell i_TargetCell, Cell i_OptionalSourceCell)
+        public bool isValidTarget(Cell i_DestinationCell, Cell i_OptionalSourceCell)
         {
-            return isValidMove(i_OptionalSourceCell, i_TargetCell);
+            Move move = new Move(this, i_OptionalSourceCell, i_DestinationCell);
+            return move.Result;
         }
 
-        public bool isValidMove(Cell i_Source, Cell i_Target)
+     
+        public IPlayer CurrentPlayer
         {
-            if (!i_Source.Piece.isKing())
-            {
-
-            }
-            else
-            {
-
-            }
+            get { return m_CurrentPlayer; }
         }
 
-        private bool isManJump()
+        public Board Board
         {
-            return 
+            get { return m_Board; }
         }
     }
 }

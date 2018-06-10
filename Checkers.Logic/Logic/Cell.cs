@@ -21,5 +21,14 @@ namespace Checkers
             get { return m_Piece; }
             set { m_Piece = value; }
         }
+
+        public int Col
+        {
+            get { return m_Position.Item2; }
+        }
+        public int Row
+        {
+            get { return m_Position.Item1; }
+        }
     }
 }

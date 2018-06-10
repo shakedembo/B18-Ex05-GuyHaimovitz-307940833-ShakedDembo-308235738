@@ -10,5 +10,8 @@ namespace Checkers.Logic
         void AddPiece(IPiece i_Piece);
         bool RemovePiece(IPiece i_Piece);
         bool DoesContain(IPiece i_Piece);
+
+        PlayerColor Color { get; }
+        List<IPiece> Pieces { get; }
     }
 }

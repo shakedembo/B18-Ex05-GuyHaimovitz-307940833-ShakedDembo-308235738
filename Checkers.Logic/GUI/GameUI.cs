@@ -16,14 +16,14 @@ namespace Checkers.GUI
     {
         
         private List<Square> m_Squares;
-        private Game1 m_Game;
+        private Game m_Game;
         
 
         private bool m_IsTargetClick = false;
         private Square m_OptionalSource;
 
 
-        public GameUI(Game1 i_Game)
+        public GameUI(Game i_Game)
         {
             
             this.m_Squares = new List<Square>();

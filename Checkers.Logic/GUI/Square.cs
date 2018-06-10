@@ -11,8 +11,8 @@ namespace Checkers.Logic.GUI
     class Square : Button
     {
         private readonly bool m_IsEnabled;
-        private Tuple<int, int> m_Position;
         private Cell m_Cell;
+        private Tuple<int, int> m_Position;
         public static readonly int r_Size = 50;
 
         public Square(bool i_IsEnabled, Tuple<int, int> i_Position, Cell i_Cell)

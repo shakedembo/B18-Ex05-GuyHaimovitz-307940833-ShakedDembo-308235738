@@ -27,12 +27,35 @@ namespace Checkers
 
         public Cell GetCell(int i, int j)
         {
-            return m_Board[i, j];
+            if (isValidCoordinate(i, j))
+            {
+                return m_Board[i, j];
+            }
+            else
+            {
+                return null;
+            }
         }
 
+        private bool isValidCoordinate(int row, int col)
+        {
+            return (row >= 0 && row <= GetSize()) && (col >= 0 && col <= GetSize());
+        }
+
+        /**
+         * Assumes valid coordinate
+         */
         public bool IsOccupied(int i, int j)
         {
             return GetCell(i, j).Piece != null;
+        }
+
+        /**
+         * Assumes valid Cell
+         */
+        public bool IsOccupied(Cell i_Cell)
+        {
+            return i_Cell.Piece != null;
         }
     }
 }

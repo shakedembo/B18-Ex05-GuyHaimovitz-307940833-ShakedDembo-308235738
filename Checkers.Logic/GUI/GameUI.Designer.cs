@@ -34,12 +34,12 @@ namespace Checkers.GUI
         /// </summary>
         private void InitializeComponent()
         {
-            for (int i = 0; i < 6; i++)
+            for (int i = 0; i < m_Game.Board.GetSize(); i++)
             {
-                for (int j = 0; j < 6; j++)
+                for (int j = 0; j < m_Game.Board.GetSize(); j++)
                 {
                    
-                    Square square = new Square((i + j) % 2 == 1, new Tuple<int, int>(i * Square.r_Size, 100 + j * Square.r_Size), new Cell(new Tuple<int, int>( i,j)) );
+                    Square square = new Square((i + j) % 2 == 1, new Tuple<int, int>(i * Square.r_Size, 100 + j * Square.r_Size), m_Game.Board.GetCell(i, j));
                     square.Click += new EventHandler(this.Square_Click);
                     m_Squares.Add(square);
                     this.Controls.Add(square);

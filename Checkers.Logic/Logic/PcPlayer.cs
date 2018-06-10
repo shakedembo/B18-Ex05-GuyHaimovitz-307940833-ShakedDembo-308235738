@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Checkers.Logic
 {
@@ -18,5 +19,8 @@ namespace Checkers.Logic
         {
             throw new NotImplementedException();
         }
+
+        public PlayerColor Color { get; }
+        public List<IPiece> Pieces { get; }
     }
 }

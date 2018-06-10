@@ -69,8 +69,8 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Logic\Enums.cs" />
-    <Compile Include="Logic\Game1.cs" />
-    <Compile Include="Logic\GameManager1.cs" />
+    <Compile Include="Logic\Game.cs" />
+    <Compile Include="Logic\GameManager.cs" />
     <Compile Include="Logic\HumanPlayer.cs" />
     <Compile Include="Logic\IPiece.cs" />
     <Compile Include="Logic\IPlayer.cs" />
