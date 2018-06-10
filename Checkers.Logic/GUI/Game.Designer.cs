@@ -1,7 +1,4 @@
-﻿
-using Checkers;
-
-namespace Checkers.GUI
+﻿namespace Checkers.GUI
 {
     partial class Game
     {

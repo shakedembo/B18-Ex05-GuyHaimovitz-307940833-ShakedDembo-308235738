@@ -38,9 +38,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Cell.cs">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="Game.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -71,9 +68,9 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Checkers.Logic\Checkers.Logic.csproj">
+    <ProjectReference Include="..\Checkers.Logic\Checkers.csproj">
       <Project>{cb5884aa-31c2-4e59-87d4-b680e1da032f}</Project>
-      <Name>Checkers.Logic</Name>
+      <Name>Checkers</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

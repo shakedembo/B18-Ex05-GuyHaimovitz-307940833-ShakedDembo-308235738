@@ -53,13 +53,26 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Board.cs" />
-    <Compile Include="Cell.cs" />
-    <Compile Include="Game.cs" />
-    <Compile Include="GameManager.cs" />
-    <Compile Include="Move.cs" />
-    <Compile Include="PcPlayer.cs" />
-    <Compile Include="Player.cs" />
+    <Compile Include="GUI\Game.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\Game.Designer.cs">
+      <DependentUpon>Game.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\GameSettings.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\GameSettings.Designer.cs">
+      <DependentUpon>GameSettings.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Program.cs" />
+    <Compile Include="Logic\Board.cs" />
+    <Compile Include="Logic\Cell.cs" />
+    <Compile Include="Logic\Game.cs" />
+    <Compile Include="Logic\GameManager.cs" />
+    <Compile Include="Logic\Move.cs" />
+    <Compile Include="Logic\PcPlayer.cs" />
+    <Compile Include="Logic\Player.cs" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.6.1">
@@ -72,6 +85,21 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="GUI\Game.resx">
+      <DependentUpon>Game.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\GameSettings.resx">
+      <DependentUpon>GameSettings.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

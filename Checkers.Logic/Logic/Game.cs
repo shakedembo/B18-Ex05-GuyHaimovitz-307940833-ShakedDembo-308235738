@@ -1,11 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 
-namespace Checkers.Logic
+namespace Checkers
 {
     class Game
     {
@@ -26,6 +21,7 @@ namespace Checkers.Logic
         {
             int moveCounter = 0;
             printGame();
+
             while (true)
             {
                 Move move;
