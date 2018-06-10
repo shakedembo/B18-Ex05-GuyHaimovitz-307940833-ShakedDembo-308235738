@@ -10,6 +10,7 @@ namespace Checkers.GUI
     class Program
     {
 
+
         public static void Main(string[] args)
         {
             GameSettings gameSettings = new GameSettings();
