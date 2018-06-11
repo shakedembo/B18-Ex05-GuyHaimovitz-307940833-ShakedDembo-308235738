@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using Checkers.GUI;
 
 namespace Checkers.Logic
@@ -14,7 +15,9 @@ namespace Checkers.Logic
         private IPlayer m_Player2;
         private IPlayer m_CurrentPlayer;
 
-        
+        private static IPlayer m_Winner;
+        private bool m_IsTie;
+        private bool m_GameEnded;
 
 
         public Game(IPlayer i_Player1, IPlayer i_Player2, int i_BoardSize)
@@ -23,6 +26,30 @@ namespace Checkers.Logic
             m_Player2 = i_Player2;
             m_CurrentPlayer = i_Player1;
             initializeBoard(i_BoardSize);
+        }
+
+        private void endGame()
+        {
+            calculateScore();
+            m_GameEnded = true;
+
+        }
+
+        public void calculateScore()
+        {
+            int player1Score = 0;
+            int player2Score = 0;
+            foreach (var piece in m_Player1.Pieces)
+            {
+                player1Score += piece.isKing() ? 4 : 1;
+            }
+
+            m_Winner = player1Score > player2Score ? m_Player1 : m_Player2;
+            m_Winner = player1Score == player2Score ? null : m_Winner;
+
+            int winnerScore = Math.Abs(player1Score - player2Score);
+            m_Winner.PlayerScore += winnerScore;
+            m_IsTie = winnerScore == 0;
         }
 
         private void initializeBoard(int i_BoardSize)
@@ -56,10 +83,16 @@ namespace Checkers.Logic
             }
         }
 
-        public void StartGame()
+        public bool StartGame()
         {
             GameUI gameUi = new GameUI(this);
             gameUi.ShowDialog();
+            
+        }
+
+        private bool DoesGameEnded()
+        {
+            return m_Player1.Pieces.Count == 0 || m_Player2.Pieces.Count == 0;
         }
 
         public void MakeMove(Cell i_Source, Cell i_Destination)
@@ -86,10 +119,49 @@ namespace Checkers.Logic
                         m_Player2.RemovePiece(pieceToRemove);
                         m_Board.GetCell(inBetweenRow, inBetweenCol).Piece = null;
                     }
-                }
 
-                m_CurrentPlayer = CurrentPlayer == m_Player1 ? m_Player2 : m_Player1;
+
+                }
+                //isKing?
+                CheckToMakeKing(i_Destination.Piece);
+                //another turn?
+                if (move.IsJump)
+                {
+                    if (IsAnotherTurn(move))
+                    {
+                        return;
+                    }
+                }
+                //is game ended?
+                if (DoesGameEnded())
+                {
+                    
+                }
+                switchCurrentTurn();
             }
+        }
+
+        private bool IsAnotherTurn(Move i_Move)
+        {
+            return i_Move.hasToEat(i_Move.Destination.Piece);
+        }
+
+        private void switchCurrentTurn()
+        {
+            m_CurrentPlayer = CurrentPlayer == m_Player1 ? m_Player2 : m_Player1;
+        }
+
+        private void CheckToMakeKing(IPiece i_Piece)
+        {
+            if (isKingRow(i_Piece))
+            {
+                i_Piece.KingMe();
+            }
+        }
+
+        private bool isKingRow(IPiece i_Piece)
+        {
+            return (i_Piece is PieceO) ? i_Piece.Row == m_Board.GetSize() - 1 : i_Piece.Row == 0;
         }
 
         public bool isValidSource(Cell i_SourceCell)

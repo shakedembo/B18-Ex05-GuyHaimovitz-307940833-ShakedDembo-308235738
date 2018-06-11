@@ -60,5 +60,10 @@ namespace Checkers.GUI
                 }
             }
         }
+
+        private void GameSettings_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }

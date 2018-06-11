@@ -58,12 +58,30 @@ namespace Checkers.GUI
                 {
 
                     m_Game.MakeMove(m_OptionalSource.Cell, senderSquare.Cell);
+                    
                     m_IsTargetClick = false;
                     m_OptionalSource.UnMark();
                     m_OptionalSource = null;
                 }
             }
             UpdateBoard();
+        }
+
+        private void gameEnded()
+        {
+            DialogResult DialogResult;
+            IPlayer winner = m_Game.calculateScore();
+            if (results.Item2 == 0)
+            {
+                DialogResult = MessageBox.Show("Tie!" + Environment.NewLine + "Another Round?", "Damka",
+                    MessageBoxButtons.YesNo);
+            }
+            else
+            {
+                DialogResult = MessageBox.Show(results.Item1 + " Won!" + Environment.NewLine + "Another Round?", "Damka",
+                    MessageBoxButtons.YesNo);
+            }
+            return DialogResult.Equals(DialogResult.Yes);
         }
 
     }

@@ -47,13 +47,14 @@ namespace Checkers.GUI
                 for (int j = 0; j < m_Game.Board.GetSize(); j++)
                 {
                    
-                    Square square = new Square((i + j) % 2 == 1, new Tuple<int, int>(i * Square.r_Size, 100 + j * Square.r_Size), m_Game.Board.GetCell(i, j));
+                    Square square = new Square((i + j) % 2 == 1, new Tuple<int, int>(i * Square.r_Size, 100 + j * Square.r_Size), m_Game.Board.GetCell(j, i));
                     square.Click += new EventHandler(this.Square_Click);
                     m_Squares.Add(square);
                     this.Controls.Add(square);
                 }
             }
 
+            this.Text = "Damka";
             this.AutoSize = true;
             this.MinimizeBox = false;
             this.MaximizeBox = false;

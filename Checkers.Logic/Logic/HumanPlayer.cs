@@ -46,6 +46,9 @@ namespace Checkers.Logic
             get { return m_Pieces; }
         }
 
-
+        public override string ToString()
+        {
+            return this.m_Name;
+        }
     }
 }

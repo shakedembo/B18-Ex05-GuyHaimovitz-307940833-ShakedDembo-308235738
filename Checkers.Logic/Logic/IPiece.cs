@@ -4,7 +4,7 @@ namespace Checkers
 {
     public interface IPiece
     {
-        void kingMe();
+        void KingMe();
         bool isKing();
 
         int Col { get; }

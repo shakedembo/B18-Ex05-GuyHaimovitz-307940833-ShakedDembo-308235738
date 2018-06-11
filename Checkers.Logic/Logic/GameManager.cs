@@ -10,6 +10,7 @@ namespace Checkers.Logic
     {
         private IPlayer m_Player1;
         private IPlayer m_Player2;
+        private int m_BoardSize;
 
         private int m_PlayerOneScore = 0;
         private int m_PlayerTwoScore = 0;
@@ -17,7 +18,7 @@ namespace Checkers.Logic
         public GameManager(string i_Player1Name, string i_Player2Name,bool i_TwoPlayers, int i_BoardSize)
         {
             m_Player1 = new HumanPlayer(i_Player1Name, PlayerColor.Black);
-
+            m_BoardSize = i_BoardSize;
             if (i_TwoPlayers)
             {
                 m_Player2 = new HumanPlayer(i_Player2Name, PlayerColor.White);
@@ -26,11 +27,18 @@ namespace Checkers.Logic
             {
                 m_Player2 = new PcPlayer();
             }
-            
-            while (true)
+
+            StartGame();
+  
+        }
+
+        private void StartGame()
+        {
+            Game game = new Game(m_Player1, m_Player2, m_BoardSize);
+
+            while (game.StartGame())
             {
-                Game game = new Game(m_Player1, m_Player2, i_BoardSize);
-                game.StartGame();
+
             }
         }
 

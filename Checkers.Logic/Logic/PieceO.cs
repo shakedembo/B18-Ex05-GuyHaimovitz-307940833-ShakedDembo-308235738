@@ -14,7 +14,7 @@ namespace Checkers
             this.m_IsKing = false;
         }
 
-        public void kingMe()
+        public void KingMe()
         {
             m_IsKing = true;
         }
