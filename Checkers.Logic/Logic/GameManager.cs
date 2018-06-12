@@ -27,11 +27,28 @@ namespace Checkers.Logic
             }
             else
             {
-                m_Player2 = new PcPlayer();
+                m_Player2 = new PcPlayer("Computer");
             }
 
             StartNewGame();
   
+        }
+
+        private void updateScores(Tuple<IPlayer, int> i_PlayerAndScore)
+        {
+            if (i_PlayerAndScore.Item1.Equals(Player1))
+            {
+                m_PlayerOneScore += i_PlayerAndScore.Item2;
+            }
+            else if (i_PlayerAndScore.Item1.Equals(Player2))
+            {
+                m_PlayerTwoScore += i_PlayerAndScore.Item2;
+            }
+        }
+
+        private void gameEndedHandler()
+        {
+            updateScores(m_CurrentGame.calculateScore());
         }
 
         public void StartNewGame()
@@ -39,6 +56,7 @@ namespace Checkers.Logic
             Player1.Pieces = new List<IPiece>();
             Player2.Pieces = new List<IPiece>();
             m_CurrentGame = new Game(Player1, Player2, BoardSize);
+            m_CurrentGame.GameEnded += gameEndedHandler;
         }
 
         public Game CurrentGame

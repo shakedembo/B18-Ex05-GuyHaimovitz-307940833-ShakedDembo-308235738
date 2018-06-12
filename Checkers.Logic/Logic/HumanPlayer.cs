@@ -8,7 +8,6 @@ namespace Checkers.Logic
         private string m_Name;
         private PlayerColor m_Color;
         private List<IPiece> m_Pieces;
-        //private int m_PlayerScore;
 
         public HumanPlayer(string i_Name, PlayerColor i_Color)
         {

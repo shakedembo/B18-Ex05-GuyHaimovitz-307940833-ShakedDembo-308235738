@@ -57,5 +57,10 @@ namespace Checkers
         {
             return i_Cell.Piece != null;
         }
+
+        internal Cell[,] BoardCells
+        {
+            get { return m_Board; }
+        }
     }
 }

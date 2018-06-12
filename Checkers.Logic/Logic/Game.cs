@@ -16,8 +16,6 @@ namespace Checkers.Logic
         private IPlayer m_CurrentPlayer;
 
         private static IPlayer m_Winner;
-        private bool m_IsTie;
-        private bool m_GameEnded;
 
         public delegate void endGameHandler();
         public event endGameHandler GameEnded;
@@ -29,12 +27,6 @@ namespace Checkers.Logic
             m_Player2 = i_Player2;
             m_CurrentPlayer = i_Player1;
             initializeBoard(i_BoardSize);
-            GameEnded += endGame;
-        }
-
-        private void endGame()
-        {
-            
         }
 
         public Tuple<IPlayer, int> calculateScore()
@@ -46,11 +38,13 @@ namespace Checkers.Logic
                 player1Score += piece.isKing() ? 4 : 1;
             }
 
-            IPlayer winner = player1Score > player2Score ? m_Player1 : m_Player2;
-            //winner = player1Score == player2Score ? null : m_Winner; //if tie
+            foreach (var piece in m_Player2.Pieces)
+            {
+                player2Score += piece.isKing() ? 4 : 1;
+            }
 
+            IPlayer winner = player1Score > player2Score ? m_Player1 : m_Player2;
             int winnerScore = Math.Abs(player1Score - player2Score);
-            m_IsTie = winnerScore == 0;
             return new Tuple<IPlayer, int>(winner, winnerScore);
         }
 
@@ -85,14 +79,42 @@ namespace Checkers.Logic
             }
         }
 
-        //public bool StartNewGame()
-        //{
-            
-        //}
-
         private bool DoesGameEnded()
         {
-            return m_Player1.Pieces.Count == 0 || m_Player2.Pieces.Count == 0;
+            bool result = m_Player1.Pieces.Count == 0 || m_Player2.Pieces.Count == 0;
+            foreach (var piece in CurrentPlayer.Pieces)
+            {
+                //has something to do?
+                if (checkPossibleMoves(this, CurrentPlayer.Color).Count == 0)
+                {
+                    result = false;
+                    break;
+                }
+            }
+
+            return result;
+        }
+
+        internal static List<Move> checkPossibleMoves(Game i_Game, PlayerColor i_Color)
+        {
+            List<Move> possibleMoves = new List<Move>();
+            Move move;
+
+            foreach (Cell source in i_Game.Board.BoardCells)
+            {
+                if (source.Piece is PieceO)
+                {
+                    foreach (Cell dest in i_Game.Board.BoardCells)
+                    {
+                        move = new Move(i_Game, source, dest);
+                        if (move.Result)
+                        {
+                            possibleMoves.Add(move);
+                        }
+                    }
+                }
+            }
+            return possibleMoves;
         }
 
         public void MakeMove(Cell i_Source, Cell i_Destination)
@@ -119,26 +141,59 @@ namespace Checkers.Logic
                         m_Player2.RemovePiece(pieceToRemove);
                         m_Board.GetCell(inBetweenRow, inBetweenCol).Piece = null;
                     }
-
-
                 }
                 //isKing?
                 CheckToMakeKing(i_Destination.Piece);
+                
+                //is game ended?
+                if (DoesGameEnded())
+                {
+                    GameEnded.Invoke();
+                    return;
+                }
+                
                 //another turn?
                 if (move.IsJump)
                 {
                     if (IsAnotherTurn(move))
                     {
-                        return;
+                        if (m_CurrentPlayer is PcPlayer)
+                        {
+                            getNextMoveFromPc(move);
+                        }
+                        else
+                        {
+                            //next move from human
+                            return;
+                        }
                     }
-                }
-                //is game ended?
-                if (DoesGameEnded())
-                {
-                    GameEnded.Invoke();
                 }
                 switchCurrentTurn();
             }
+        }
+
+        private void getNextMoveFromPc(Move i_LastMove)
+        {
+            if (m_CurrentPlayer.Pieces.Count > 0)
+            {
+                Move PCmove = (m_CurrentPlayer as PcPlayer).GetNextMove(this, i_LastMove);
+                MakeMove(PCmove.Source, PCmove.Destination);
+            }
+        }
+
+        private void getMoveFromPc()
+        {
+            if (m_CurrentPlayer.Pieces.Count > 0)
+            {
+                Move PCmove = (m_CurrentPlayer as PcPlayer).GetMove(this);
+                MakeMove(PCmove.Source, PCmove.Destination);
+            }
+        }
+
+        internal static IEnumerable<Move> possibleNextMoves(Game i_Game, Move i_LastMove)
+        {
+            List<Move> allPossibleMoves = checkPossibleMoves(i_Game, i_Game.CurrentPlayer.Color);
+            return allPossibleMoves.Where(move => move.Source.Equals(i_LastMove.Destination));
         }
 
         private bool IsAnotherTurn(Move i_Move)
@@ -149,6 +204,12 @@ namespace Checkers.Logic
         private void switchCurrentTurn()
         {
             m_CurrentPlayer = CurrentPlayer == m_Player1 ? m_Player2 : m_Player1;
+
+            if (m_CurrentPlayer is PcPlayer)
+            {
+                getMoveFromPc();
+            }
+
         }
 
         private void CheckToMakeKing(IPiece i_Piece)
