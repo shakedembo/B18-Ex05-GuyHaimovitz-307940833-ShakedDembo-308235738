@@ -16,19 +16,24 @@ namespace Checkers.GUI
     {
         
         private List<Square> m_Squares;
+        private GameManager m_GameManager;
         private Game m_Game;
-        
 
         private bool m_IsTargetClick = false;
         private Square m_OptionalSource;
 
 
-        public GameUI(Game i_Game)
+        public GameUI(GameManager i_GameManager)
         {
-            
+            InitializeGameUI(i_GameManager); 
+        }
+
+        private void InitializeGameUI(GameManager i_GameManager)
+        {
             this.m_Squares = new List<Square>();
-            m_Game = i_Game;
-            
+            m_GameManager = i_GameManager;
+            m_Game = m_GameManager.CurrentGame;
+            m_Game.GameEnded += new Game.endGameHandler(gameEnded);
             InitializeComponent();
         }
 
@@ -70,18 +75,28 @@ namespace Checkers.GUI
         private void gameEnded()
         {
             DialogResult DialogResult;
-            IPlayer winner = m_Game.calculateScore();
-            if (results.Item2 == 0)
+            
+            Tuple<IPlayer, int> gameResults = m_Game.calculateScore();
+
+
+            if (gameResults.Item2 == 0)
             {
                 DialogResult = MessageBox.Show("Tie!" + Environment.NewLine + "Another Round?", "Damka",
                     MessageBoxButtons.YesNo);
             }
             else
             {
-                DialogResult = MessageBox.Show(results.Item1 + " Won!" + Environment.NewLine + "Another Round?", "Damka",
+                DialogResult = MessageBox.Show(gameResults.Item1 + " Won!" + Environment.NewLine + "Another Round?", "Damka",
                     MessageBoxButtons.YesNo);
             }
-            return DialogResult.Equals(DialogResult.Yes);
+
+            if (DialogResult.Equals(DialogResult.Yes))
+            {
+                m_GameManager.StartNewGame();
+                InitializeGameUI(m_GameManager);
+                //UpdateBoard();
+            }
+
         }
 
     }

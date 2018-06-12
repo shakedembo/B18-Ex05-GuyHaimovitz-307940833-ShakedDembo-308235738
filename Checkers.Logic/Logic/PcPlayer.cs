@@ -21,6 +21,6 @@ namespace Checkers.Logic
         }
 
         public PlayerColor Color { get; }
-        public List<IPiece> Pieces { get; }
+        public List<IPiece> Pieces { get; set; }
     }
 }

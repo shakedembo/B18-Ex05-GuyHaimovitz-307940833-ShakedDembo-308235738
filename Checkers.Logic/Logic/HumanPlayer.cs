@@ -8,11 +8,13 @@ namespace Checkers.Logic
         private string m_Name;
         private PlayerColor m_Color;
         private List<IPiece> m_Pieces;
+        //private int m_PlayerScore;
 
         public HumanPlayer(string i_Name, PlayerColor i_Color)
         {
             this.m_Name = i_Name;
             this.m_Color = i_Color;
+            //this.m_PlayerScore = 0;
             this.m_Pieces = new List<IPiece>();
         }
 
@@ -44,6 +46,7 @@ namespace Checkers.Logic
         public List<IPiece> Pieces
         {
             get { return m_Pieces; }
+            set { m_Pieces = value; }
         }
 
         public override string ToString()

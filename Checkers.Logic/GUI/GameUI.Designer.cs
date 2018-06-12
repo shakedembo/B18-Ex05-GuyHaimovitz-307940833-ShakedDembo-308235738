@@ -42,6 +42,7 @@ namespace Checkers.GUI
         /// </summary>
         private void InitializeComponent()
         {
+            this.Controls.Clear();
             for (int i = 0; i < m_Game.Board.GetSize(); i++)
             {
                 for (int j = 0; j < m_Game.Board.GetSize(); j++)

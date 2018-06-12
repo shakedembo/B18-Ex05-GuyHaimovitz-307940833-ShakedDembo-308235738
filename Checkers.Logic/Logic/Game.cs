@@ -19,6 +19,9 @@ namespace Checkers.Logic
         private bool m_IsTie;
         private bool m_GameEnded;
 
+        public delegate void endGameHandler();
+        public event endGameHandler GameEnded;
+        
 
         public Game(IPlayer i_Player1, IPlayer i_Player2, int i_BoardSize)
         {
@@ -26,16 +29,15 @@ namespace Checkers.Logic
             m_Player2 = i_Player2;
             m_CurrentPlayer = i_Player1;
             initializeBoard(i_BoardSize);
+            GameEnded += endGame;
         }
 
         private void endGame()
         {
-            calculateScore();
-            m_GameEnded = true;
-
+            
         }
 
-        public void calculateScore()
+        public Tuple<IPlayer, int> calculateScore()
         {
             int player1Score = 0;
             int player2Score = 0;
@@ -44,12 +46,12 @@ namespace Checkers.Logic
                 player1Score += piece.isKing() ? 4 : 1;
             }
 
-            m_Winner = player1Score > player2Score ? m_Player1 : m_Player2;
-            m_Winner = player1Score == player2Score ? null : m_Winner;
+            IPlayer winner = player1Score > player2Score ? m_Player1 : m_Player2;
+            //winner = player1Score == player2Score ? null : m_Winner; //if tie
 
             int winnerScore = Math.Abs(player1Score - player2Score);
-            m_Winner.PlayerScore += winnerScore;
             m_IsTie = winnerScore == 0;
+            return new Tuple<IPlayer, int>(winner, winnerScore);
         }
 
         private void initializeBoard(int i_BoardSize)
@@ -83,12 +85,10 @@ namespace Checkers.Logic
             }
         }
 
-        public bool StartGame()
-        {
-            GameUI gameUi = new GameUI(this);
-            gameUi.ShowDialog();
+        //public bool StartNewGame()
+        //{
             
-        }
+        //}
 
         private bool DoesGameEnded()
         {
@@ -135,7 +135,7 @@ namespace Checkers.Logic
                 //is game ended?
                 if (DoesGameEnded())
                 {
-                    
+                    GameEnded.Invoke();
                 }
                 switchCurrentTurn();
             }

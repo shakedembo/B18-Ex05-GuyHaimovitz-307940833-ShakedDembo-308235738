@@ -12,8 +12,8 @@ namespace Checkers.Logic
         bool DoesContain(IPiece i_Piece);
 
         PlayerColor Color { get; }
-        List<IPiece> Pieces { get; }
+        List<IPiece> Pieces { get; set; }
 
-        int PlayerScore { get; set; }
+        //int PlayerScore { get; set; }
     }
 }
