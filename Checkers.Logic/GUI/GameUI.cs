@@ -95,6 +95,10 @@ namespace Checkers.GUI
                 m_GameManager.StartNewGame();
                 InitializeGameUI(m_GameManager);
             }
+            else
+            {
+                Close();
+            }
 
         }
 

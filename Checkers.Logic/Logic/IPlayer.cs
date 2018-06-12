@@ -13,7 +13,5 @@ namespace Checkers.Logic
 
         PlayerColor Color { get; }
         List<IPiece> Pieces { get; set; }
-
-        //int PlayerScore { get; set; }
     }
 }

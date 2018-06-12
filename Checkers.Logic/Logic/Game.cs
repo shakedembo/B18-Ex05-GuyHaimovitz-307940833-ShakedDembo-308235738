@@ -81,7 +81,7 @@ namespace Checkers.Logic
 
         private bool DoesGameEnded()
         {
-            bool result = m_Player1.Pieces.Count == 0 || m_Player2.Pieces.Count == 0;
+            bool result;
             foreach (var piece in CurrentPlayer.Pieces)
             {
                 //has something to do?
@@ -91,6 +91,7 @@ namespace Checkers.Logic
                     break;
                 }
             }
+            result = m_Player1.Pieces.Count == 0 || m_Player2.Pieces.Count == 0;
 
             return result;
         }
@@ -142,6 +143,7 @@ namespace Checkers.Logic
                         m_Board.GetCell(inBetweenRow, inBetweenCol).Piece = null;
                     }
                 }
+
                 //isKing?
                 CheckToMakeKing(i_Destination.Piece);
                 
@@ -151,11 +153,11 @@ namespace Checkers.Logic
                     GameEnded.Invoke();
                     return;
                 }
-                
+
                 //another turn?
                 if (move.IsJump)
                 {
-                    if (IsAnotherTurn(move))
+                    if (isAnotherTurn(move))
                     {
                         if (m_CurrentPlayer is PcPlayer)
                         {
@@ -196,7 +198,7 @@ namespace Checkers.Logic
             return allPossibleMoves.Where(move => move.Source.Equals(i_LastMove.Destination));
         }
 
-        private bool IsAnotherTurn(Move i_Move)
+        private bool isAnotherTurn(Move i_Move)
         {
             return i_Move.hasToEat(i_Move.Destination.Piece);
         }
