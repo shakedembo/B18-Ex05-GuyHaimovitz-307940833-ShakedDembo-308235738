@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using Checkers.Logic;
 
-namespace Checkers
+namespace Checkers.Logic
 {
     public interface IPiece
     {

@@ -2,7 +2,7 @@
 using System.Deployment.Internal;
 using System.Threading;
 
-namespace Checkers
+namespace Checkers.Logic
 {
     public class Cell
     {

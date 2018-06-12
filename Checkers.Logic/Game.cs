@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Checkers.GUI;
 
 namespace Checkers.Logic
 {
@@ -14,8 +13,6 @@ namespace Checkers.Logic
         private IPlayer m_Player1;
         private IPlayer m_Player2;
         private IPlayer m_CurrentPlayer;
-
-        private static IPlayer m_Winner;
 
         public delegate void endGameHandler();
 

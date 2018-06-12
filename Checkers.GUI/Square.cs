@@ -5,8 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Checkers.Logic;
 
-namespace Checkers.Logic.GUI
+namespace Checkers.GUI
 {
     class Square : Button
     {

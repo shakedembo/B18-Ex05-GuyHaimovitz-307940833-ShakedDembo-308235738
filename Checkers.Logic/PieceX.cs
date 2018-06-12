@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Checkers
+namespace Checkers.Logic
 {
     class PieceX : IPiece
     {
