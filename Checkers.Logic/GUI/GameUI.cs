@@ -34,6 +34,7 @@ namespace Checkers.GUI
             m_GameManager = i_GameManager;
             m_Game = m_GameManager.CurrentGame;
             m_Game.GameEnded += new Game.endGameHandler(gameEnded);
+            m_Game.MoveHaveBeenMade += new Game.moveHaveBeenMadeHandler(UpdateBoard);
             InitializeComponent();
         }
 
@@ -69,7 +70,6 @@ namespace Checkers.GUI
                     m_OptionalSource = null;
                 }
             }
-            UpdateBoard();
         }
 
         private void gameEnded()

@@ -32,6 +32,7 @@ namespace Checkers.Logic
             return m_Pieces.Contains(i_Piece);
         }
         
+        
 
         public string Name
         {

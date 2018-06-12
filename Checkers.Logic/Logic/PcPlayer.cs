@@ -29,7 +29,20 @@ namespace Checkers.Logic
             return possibleMoves[RandomIndex];
         }
 
+        public void getNextMoveFromPc(Game i_Game, Move i_LastMove)
+        {
+            if (i_Game.CurrentPlayer.Pieces.Count > 0)
+            {
+                Move PCmove = (i_Game.CurrentPlayer as PcPlayer).GetNextMove(i_Game, i_LastMove);
+                i_Game.MakeMove(PCmove.Source, PCmove.Destination);
+            }
+        }
 
+        internal static IEnumerable<Move> possibleNextMoves(Game i_Game, Move i_LastMove)
+        {
+            List<Move> allPossibleMoves = Game.checkPossibleMoves(i_Game, i_Game.CurrentPlayer.Color);
+            return allPossibleMoves.Where(move => move.Source.Equals(i_LastMove.Destination));
+        }
 
         public void AddPiece(IPiece i_Piece)
         {
@@ -69,7 +82,7 @@ namespace Checkers.Logic
 
         public Move GetNextMove(Game i_Game, Move i_LastMove)
         {
-            List<Move> possibleMoves = Game.possibleNextMoves(i_Game, i_LastMove).ToList();
+            List<Move> possibleMoves = possibleNextMoves(i_Game, i_LastMove).ToList();
             Random rnd = new Random();
 
             int RandomIndex = rnd.Next(0, possibleMoves.Count - 1);

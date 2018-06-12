@@ -18,7 +18,12 @@ namespace Checkers.Logic
         private static IPlayer m_Winner;
 
         public delegate void endGameHandler();
-        public event endGameHandler GameEnded;
+
+        public event endGameHandler GameEnded = () => { };
+
+        public delegate void moveHaveBeenMadeHandler();
+
+        public event moveHaveBeenMadeHandler MoveHaveBeenMade = () => { };
         
 
         public Game(IPlayer i_Player1, IPlayer i_Player2, int i_BoardSize)
@@ -146,6 +151,8 @@ namespace Checkers.Logic
 
                 //isKing?
                 CheckToMakeKing(i_Destination.Piece);
+
+                MoveHaveBeenMade.Invoke();
                 
                 //is game ended?
                 if (DoesGameEnded())
@@ -161,7 +168,8 @@ namespace Checkers.Logic
                     {
                         if (m_CurrentPlayer is PcPlayer)
                         {
-                            getNextMoveFromPc(move);
+                            (m_CurrentPlayer as PcPlayer).getNextMoveFromPc(this, move);
+                            return;
                         }
                         else
                         {
@@ -174,29 +182,7 @@ namespace Checkers.Logic
             }
         }
 
-        private void getNextMoveFromPc(Move i_LastMove)
-        {
-            if (m_CurrentPlayer.Pieces.Count > 0)
-            {
-                Move PCmove = (m_CurrentPlayer as PcPlayer).GetNextMove(this, i_LastMove);
-                MakeMove(PCmove.Source, PCmove.Destination);
-            }
-        }
-
-        private void getMoveFromPc()
-        {
-            if (m_CurrentPlayer.Pieces.Count > 0)
-            {
-                Move PCmove = (m_CurrentPlayer as PcPlayer).GetMove(this);
-                MakeMove(PCmove.Source, PCmove.Destination);
-            }
-        }
-
-        internal static IEnumerable<Move> possibleNextMoves(Game i_Game, Move i_LastMove)
-        {
-            List<Move> allPossibleMoves = checkPossibleMoves(i_Game, i_Game.CurrentPlayer.Color);
-            return allPossibleMoves.Where(move => move.Source.Equals(i_LastMove.Destination));
-        }
+        
 
         private bool isAnotherTurn(Move i_Move)
         {
@@ -209,7 +195,8 @@ namespace Checkers.Logic
 
             if (m_CurrentPlayer is PcPlayer)
             {
-                getMoveFromPc();
+                Move PCmove = (m_CurrentPlayer as PcPlayer).GetMove(this);
+                MakeMove(PCmove.Source, PCmove.Destination);
             }
 
         }
